@@ -29,7 +29,7 @@ function formatVideoLength(duration: number): string {
   return formattedVideoLength;
 }
 
-export default function formatEpisodes(data: FormatEpisodesParams) {
+export function formatEpisodes(data: FormatEpisodesParams) {
   const parsedEpisodes = data.map(episode => {
     return {
       id: episode.id,
@@ -39,7 +39,6 @@ export default function formatEpisodes(data: FormatEpisodesParams) {
         locale: ptBR,
       }),
       thumbnail: episode.thumbnail,
-      description: episode.description,
       url: episode.file.url,
       duration: episode.file.duration,
       formattedDuration: formatVideoLength(Number(episode.file.duration)),
@@ -47,4 +46,20 @@ export default function formatEpisodes(data: FormatEpisodesParams) {
   });
 
   return parsedEpisodes;
+}
+
+export function formatEpisode(episode: Episode) {
+  return {
+    id: episode.id,
+    title: episode.title,
+    members: episode.members,
+    publishedAt: format(parseISO(episode.published_at), 'd MMM yy', {
+      locale: ptBR,
+    }),
+    thumbnail: episode.thumbnail,
+    description: episode.description,
+    url: episode.file.url,
+    duration: episode.file.duration,
+    formattedDuration: formatVideoLength(Number(episode.file.duration)),
+  };
 }

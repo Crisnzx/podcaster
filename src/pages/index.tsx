@@ -1,6 +1,6 @@
 import { GetStaticProps } from "next";
 import { api } from "../services/api";
-import formatEpisodes from "../utils/formatEpisodes";
+import { formatEpisodes } from "../utils/formatEpisodes";
 import Image from 'next/image';
 import classes from '../styles/home.module.scss';
 import Link from 'next/link';
@@ -11,7 +11,6 @@ type Episode = {
   members: string,
   publishedAt: string,
   thumbnail: string,
-  description: string,
   url: string,
   duration: number,
   formattedDuration: string,
