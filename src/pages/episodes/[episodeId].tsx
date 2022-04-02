@@ -49,8 +49,25 @@ export default function Episode({ episode }: EpisodeProps) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
+
+  const { data } = await api.get('episodes', {
+    params: {
+      _limit: 2,
+      _sort: 'published_at',
+      _order: 'desc',
+    }
+  });
+
+  const paths = data.map((episode) => {
+    return {
+      params: {
+        episodeId: episode.id,
+      }
+    }
+  })
+
   return {
-    paths: [],
+    paths,
     fallback: 'blocking',
   }
 }
@@ -68,3 +85,22 @@ export const getStaticProps: GetStaticProps = async (context) => {
     revalidate: 60 * 60 * 24, // 24 hours
   };
 };
+
+
+// getStaticPaths
+/*
+We have to tell next what dinamic pages should be pre-rendered
+We can provide an array of paths that will be generated in the build process
+We can provide the most popular pages, and don't provide all pages, to prevent too much delay
+when the build is generated
+
+Fallback - defines how our app should behave when a page that wasn't generated before is accessed
+
+fallback: false - returns 404 not found
+
+fallback: true - fetch the data from the back-end on the client-side
+(bad SEO, the source code is almost empty)
+
+fallback: blocking - fetch the data from the back-end on the next-server-side
+(good SEO, only renders the components when the data is available)
+*/

@@ -4,6 +4,8 @@ import { formatEpisodes } from "../utils/formatEpisodes";
 import Image from 'next/image';
 import classes from '../styles/home.module.scss';
 import Link from 'next/link';
+import { useContext } from "react";
+import { PlayerContext } from "../contexts/PlayerContext";
 
 type Episode = {
   id: string,
@@ -22,6 +24,8 @@ type HomeProps = {
 }
 
 export default function Home(props: HomeProps) {
+
+  const { play } = useContext(PlayerContext);
   const { latestEpisodes, allEpisodes } = props;
   return (
     <div className={classes.homePage}>
@@ -40,7 +44,7 @@ export default function Home(props: HomeProps) {
                   <span>{latestEpisode.publishedAt}</span>
                   <span>{latestEpisode.formattedDuration}</span>
                 </div>
-                <button type="button">
+                <button type="button" onClick={() => play(latestEpisode)}>
                   <img src="/play-green.svg" alt="Ouvir Podcast" />
                 </button>
               </li>
@@ -77,7 +81,7 @@ export default function Home(props: HomeProps) {
                   <td style={{ width: 100 }}>{episode.publishedAt}</td>
                   <td>{episode.formattedDuration}</td>
                   <td>
-                    <button type="button">
+                    <button type="button" onClick={() => play(episode)}>
                       <img src="/play-green.svg" alt="Ouvir Podcast" />
                     </button>
                   </td>
